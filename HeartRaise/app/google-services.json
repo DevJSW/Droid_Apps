@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1081427703447",
+    "firebase_url": "https://heartraise-b0190.firebaseio.com",
+    "project_id": "heartraise-b0190",
+    "storage_bucket": "heartraise-b0190.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081427703447:android:9d583ed5365efff2",
+        "android_client_info": {
+          "package_name": "org.heartraise.heartraise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081427703447-afge2b2mbaud5hrhr2dri4uah0cn09ds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhMJKpkKNO7ncBVZ7s2E6LDqqI9wSSMww"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
