@@ -1,6 +1,7 @@
 package org.heartraise.heartraise;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
         newEmail = (EditText) findViewById(R.id.new_email);
         password = (EditText) findViewById(R.id.password);
         newPassword = (EditText) findViewById(R.id.newPassword);
+
 
         oldEmail.setVisibility(View.GONE);
         newEmail.setVisibility(View.GONE);
