@@ -17,21 +17,13 @@
 
 
         <ImageView
-            android:layout_width="140dp"
+            android:layout_width="135dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:src="@drawable/logo" />
 
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="#ffffff" />
+
 
         <EditText
             android:id="@+id/email"

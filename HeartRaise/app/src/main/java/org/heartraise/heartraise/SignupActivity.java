@@ -38,7 +38,6 @@ public class SignupActivity extends AppCompatActivity {
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         mProgress = new ProgressDialog(this);
@@ -64,12 +63,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                final String name = inputName.getText().toString().trim();
 
-                if (TextUtils.isEmpty(name)) {
-                    Toast.makeText(getApplicationContext(), "Enter Username!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
@@ -104,7 +98,6 @@ public class SignupActivity extends AppCompatActivity {
 
                                     String User_id = auth.getCurrentUser().getUid();
                                     DatabaseReference Current_userID = mDatabase.child(User_id);
-                                    Current_userID.child("name").setValue(name);
                                     Current_userID.child("image").setValue("Default");
 
                                     mProgress.dismiss();

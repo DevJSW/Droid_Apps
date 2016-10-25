@@ -17,10 +17,10 @@
 
 
         <ImageView
-            android:layout_width="140dp"
+            android:layout_width="135dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="40dp"
             android:src="@drawable/logo" />
 
         <android.support.design.widget.TextInputLayout
@@ -31,7 +31,6 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/white"
@@ -42,24 +41,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Login Button -->
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/hint_password"
+            android:inputType="textPassword"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
             android:background="@drawable/mybutton"
             android:text="@string/btn_login"
             android:textColor="@android:color/black" />
