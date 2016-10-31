@@ -15,6 +15,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressDialog mProgress;
     private Button btnSignup, btnLogin, btnReset;
+    private DatabaseReference mDatabaseUsers;
 
 
 
@@ -48,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         mProgress = new ProgressDialog(this);
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabaseUsers.keepSynced(true);
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
@@ -109,14 +117,57 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 } else {
                                     mProgress.dismiss();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    
+                                    checkUserExists();
+
                                 }
                             }
                         });
 
             }
         });
+    }
+
+    private void checkUserExists() {
+
+        this.mProgress = ProgressDialog.show(this, "HeartRaise",
+                "Initializing...");
+
+        final String User_id = auth.getCurrentUser().getUid();
+
+        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild(User_id)) {
+
+                    mProgress.dismiss();
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+
+                    mProgress.dismiss();
+
+                    Toast.makeText(getApplicationContext(), "Hey! Remember to add your Photo & Name!", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

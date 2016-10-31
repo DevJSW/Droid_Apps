@@ -21,11 +21,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingBottom="10dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:paddingTop="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="#00ffffff">
+
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/editImgBtn"
+                android:src="@drawable/profilepic"
+                android:onClick="editImage"
+                android:adjustViewBounds="true"
+                android:background="#01ffffff"
+                android:scaleType="centerCrop" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Enter Name"
+                android:ems="10"
+                android:id="@+id/nameField"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/editImgBtn"
+                android:layout_toEndOf="@+id/editImgBtn" />
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/tickBtn"
+                android:layout_gravity="right"
+                android:src="@drawable/tick_btn"
+                android:adjustViewBounds="true"
+                android:onClick="sendProfile"
+                android:scaleType="centerCrop"
+                android:background="#01ffffff"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="#837b7b"/>
 
         <EditText
             android:id="@+id/old_email"
@@ -74,7 +130,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_change"
             android:textColor="@android:color/white"
@@ -85,7 +141,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_change"
             android:textColor="@android:color/white"
@@ -96,7 +152,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_send"
             android:textColor="@android:color/white"
@@ -108,12 +164,13 @@
             android:layout_height="30dp"
             android:visibility="gone" />
 
+
         <Button
             android:id="@+id/remove"
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_remove"
             android:textColor="@android:color/white"
@@ -124,7 +181,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/change_email"
             android:textStyle="bold" />
 
@@ -133,7 +190,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/change_password"
             android:textStyle="bold" />
 
@@ -142,7 +199,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/send_password_reset_email"
             android:textStyle="bold" />
 
@@ -151,7 +208,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/remove_user"
             android:textStyle="bold" />
 

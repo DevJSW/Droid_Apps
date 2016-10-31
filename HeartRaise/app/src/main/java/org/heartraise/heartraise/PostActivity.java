@@ -15,8 +15,11 @@ import android.widget.ImageButton;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +58,9 @@ public class PostActivity extends AppCompatActivity {
         mSelectImage = (ImageButton) findViewById(R.id.imageSelect);
         mPostStory = (EditText) findViewById(R.id.storyField);
         mPostTitle = (EditText) findViewById(R.id.titleField);
+
+        mCurrentUser = mAuth.getCurrentUser();
+        mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
 
         mSubmitBtn = (Button) findViewById(R.id.submitBtn);
 
@@ -103,9 +109,25 @@ public class PostActivity extends AppCompatActivity {
 
                     final DatabaseReference newPost = mDatabase.push();
 
-                    newPost.child("title").setValue(title_val);
-                    newPost.child("story").setValue(story_val);
-                    newPost.child("image").setValue(downloadUrl.toString());
+
+                    mDatabaseUser.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            newPost.child("title").setValue(title_val);
+                            newPost.child("story").setValue(story_val);
+                            newPost.child("image").setValue(downloadUrl.toString());
+                            newPost.child("uid").setValue(mCurrentUser.getUid());
+                            newPost.child("username").setValue(dataSnapshot.child("name").getValue());
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
                     mProgress.dismiss();
 

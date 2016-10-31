@@ -4,16 +4,19 @@ package org.heartraise.heartraise;
  * Created by John on 14-Sep-16.
  */
 public class heartraise {
-    private String title, story, image;
 
-    public heartraise() {
+    private String title, story, image, username;
+
+
+    public heartraise () {
 
     }
 
-    public heartraise(String title, String story, String image) {
+    public heartraise(String title, String story, String image, String username) {
         this.title = title;
         this.story = story;
         this.image = image;
+        this.username = username;
     }
 
     public String getTitle() {
@@ -38,5 +41,13 @@ public class heartraise {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

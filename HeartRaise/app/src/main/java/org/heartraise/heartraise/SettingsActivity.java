@@ -1,31 +1,49 @@
 package org.heartraise.heartraise;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
             changeEmail, changePassword, sendEmail, remove, signOut;
 
-    private EditText oldEmail, newEmail, password, newPassword;
+    private ImageButton editimgbtn, tickbtn;
+
+    private EditText oldEmail, newEmail, password, newPassword, userName;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private Uri mImageUri = null;
+    private static final int GALLERY_REQUEST =1;
+    private DatabaseReference mDatabaseUsers;
+    private StorageReference mStorage;
+    private ProgressDialog mprogress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +82,16 @@ public class SettingsActivity extends AppCompatActivity {
         remove = (Button) findViewById(R.id.remove);
         signOut = (Button) findViewById(R.id.sign_out);
 
+        mprogress = new ProgressDialog(this);
+
+        editimgbtn = (ImageButton) findViewById(R.id.editImageBtn);
+        tickbtn = (ImageButton) findViewById(R.id.tickBtn);
+
         oldEmail = (EditText) findViewById(R.id.old_email);
         newEmail = (EditText) findViewById(R.id.new_email);
         password = (EditText) findViewById(R.id.password);
         newPassword = (EditText) findViewById(R.id.newPassword);
+        userName = (EditText) findViewById(R.id.nameField);
 
 
         oldEmail.setVisibility(View.GONE);
@@ -80,6 +104,39 @@ public class SettingsActivity extends AppCompatActivity {
         remove.setVisibility(View.GONE);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        mStorage = FirebaseStorage.getInstance().getReference().child("Profile_Images");
+
+        /*
+        tickbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startPosting();
+
+            }
+        });
+
+
+
+        /*
+        editimgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_REQUEST);
+
+            }
+        });
+        */
+
+
+
+
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
@@ -242,6 +299,71 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    private void startPosting() {
+
+        final String name = userName.getText().toString().trim();
+        final String user_id = auth.getCurrentUser().getUid();
+
+        if (!TextUtils.isEmpty(name) || mImageUri != null ) {
+
+            mprogress.setMessage("Sending...");
+            mprogress.show();
+
+            StorageReference filepath = mStorage.child(mImageUri.getLastPathSegment());
+
+            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+
+                    mDatabaseUsers.child(user_id).child("name").setValue(name);
+                    mDatabaseUsers.child(user_id).child("image").setValue(name);
+
+                    mprogress.dismiss();
+                    Toast.makeText(SettingsActivity.this, "Image & Name uploaded successfully!", Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+
+            mImageUri = data.getData();
+
+            CropImage.activity(mImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+
+                editimgbtn.setImageURI(mImageUri);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+
+
+
+    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -282,4 +404,20 @@ public class SettingsActivity extends AppCompatActivity {
             auth.removeAuthStateListener(authListener);
         }
     }
+
+    public void editImage(final View v) {
+
+        Intent galleryIntent = new Intent();
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, GALLERY_REQUEST);
+
+
+    }
+
+    public void sendProfile(final View v) {
+
+        startPosting();
+    }
+
 }

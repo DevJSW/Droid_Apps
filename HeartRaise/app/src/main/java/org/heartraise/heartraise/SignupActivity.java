@@ -96,8 +96,8 @@ public class SignupActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
 
-                                    String User_id = auth.getCurrentUser().getUid();
-                                    DatabaseReference Current_userID = mDatabase.child(User_id);
+                                    String user_id = auth.getCurrentUser().getUid();
+                                    DatabaseReference Current_userID = mDatabase.child(user_id);
                                     Current_userID.child("image").setValue("Default");
 
                                     mProgress.dismiss();
