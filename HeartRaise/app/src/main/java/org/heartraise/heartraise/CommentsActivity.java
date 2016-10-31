@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,14 +17,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CommentsActivity extends AppCompatActivity {
 
-    DatabaseReference mDatabase;
-    ProgressDialog mProgress;
+    private ProgressDialog mProgress;
     private RecyclerView mCommentList;
+    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +39,56 @@ public class CommentsActivity extends AppCompatActivity {
 
         mCommentList = (RecyclerView) findViewById(R.id.comment_list);
         mCommentList.setHasFixedSize(true);
-        mCommentList.
+        mCommentList.setLayoutManager(new LinearLayoutManager(this));
+        mDatabaseComment = FirebaseDatabase.getInstance().getReference().child("Comments");
+        mDatabaseComment.keepSynced(true);
 
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerAdapter<Comment, CommentViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Comment, CommentViewHolder>(
+
+                Comment.class,
+                R.layout.comment_row,
+                CommentViewHolder.class,
+                mDatabaseComment
+        ) {
+            @Override
+            protected void populateViewHolder(CommentViewHolder viewHolder, Comment model, int position) {
+
+                viewHolder.setComment(model.getComment());
+
+            }
+        };
+
+        mCommentList.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+    public static class CommentViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        public CommentViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+
+        }
+
+        public void setComment(String comment) {
+
+            TextView post_comment = (TextView) mView.findViewById(R.id.post_comment);
+            post_comment.setText(comment);
+
+        }
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

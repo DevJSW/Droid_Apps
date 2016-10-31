@@ -60,7 +60,6 @@
         <activity
             android:name=".CommentsActivity"
             android:label="Comments" />
-        <activity android:name=".WriteCommentActivity" />
         <activity android:name=".PayDialog" />
     </application>
 

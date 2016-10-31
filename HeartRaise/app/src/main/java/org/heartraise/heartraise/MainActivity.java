@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
 
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setStory(model.getStory());
-                viewHolder.setStory(model.getUsername());
+                viewHolder.setUsername(model.getUsername());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
                 viewHolder.setLikeBtn(post_key);
